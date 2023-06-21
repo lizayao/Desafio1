@@ -1,9 +1,12 @@
+const fs = require('fs')
+
 class ProductManager {
-    constructor() {
+    constructor(path) {
         this.products = [];
+        this.path = path;
     }
 
-    addProduct(data) {
+    async addProduct(data) {
         const newProduct = {
             id: this.products.length + 1,
             title: data.title,
@@ -11,8 +14,9 @@ class ProductManager {
             price: data.price,
             thumbnail: data.thumbnail,
             code: data.code,
-            stock: data.stock,
+            stock: data.stock ?? 1
         }
+        await this.getProducts()
 
         const requiredFields = ['title', 'description', 'price', 'thumbnail', 'code', 'stock'];
         const missingFields = requiredFields.filter(field => !data[field]);
@@ -28,24 +32,47 @@ class ProductManager {
             return;
         }
         this.products.push(newProduct);
+        await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2))
+        console.log(`Se agregó el producto "${data.title}"`);
     }
 
-    getProducts(){
-        return this.products;
-    }
-
-    getProductById(id){
-        const product = this.products.find((p) => p.id === id);
-        if(product){
-            return product;
-        }else{
-            console.log("Not found");
-            return null;
+    async createFile() {
+        try {
+            await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2))
+            console.log(`El archivo ${this.path} fue creado correctamente`)
+        } catch (error) {
+            console.log('Error al crear el archivo', { error })
         }
     }
+
+    async getProducts() {
+        try {
+            const data = await fs.promises.readFile(this.path, 'utf-8')
+            this.products = JSON.parse(data)
+            console.log(this.products)
+            return this.products
+        } catch (error) {
+            console.log('Error al leer el archivo', { error })
+            this.products = []
+            return []
+        }
+    }
+
+/* getProductById(id) {
+    const product = this.products.find((p) => p.id === id);
+    if (product) {
+        return product;
+    } else {
+        console.log("Not found");
+        return null;
+    }
+} */
+
+
 }
 
-const manager = new ProductManager();
+
+/* const manager = new ProductManager();
 
 const product = {
     title: 'Taza de gato',
@@ -58,4 +85,9 @@ const product = {
 
 manager.addProduct(product);
 
-console.log(manager.getProducts())
+console.log(manager.getProducts()) */
+
+
+const productManager = new ProductManager('./products.json');
+productManager.createFile()
+productManager.getProducts()
