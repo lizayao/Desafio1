@@ -58,21 +58,21 @@ class ProductManager {
         }
     }
 
-/* getProductById(id) {
-    const product = this.products.find((p) => p.id === id);
-    if (product) {
-        return product;
-    } else {
-        console.log("Not found");
-        return null;
+    getProductById(id) {
+        const product = this.products.find((p) => p.id === id);
+        if (product) {
+            return product;
+        } else {
+            console.log("Not found");
+            return null;
+        }
     }
-} */
 
 
 }
 
 
-/* const manager = new ProductManager();
+const manager = new ProductManager('./products.json');
 
 const product = {
     title: 'Taza de gato',
@@ -85,7 +85,7 @@ const product = {
 
 manager.addProduct(product);
 
-console.log(manager.getProducts()) */
+console.log(manager.getProducts())
 
 
 const productManager = new ProductManager('./products.json');

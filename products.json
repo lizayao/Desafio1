@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": 1,
+    "title": "Taza de gato",
+    "description": "Taza de porcelana con forma de gato",
+    "price": 2000,
+    "thumbnail": "https://d3ugyf2ht6aenh.cloudfront.net/stores/369/984/products/taza-lila____1-08de3701ce228fd8a416234187100692-640-0.jpg",
+    "code": "PROD563",
+    "stock": 50
+  }
+]
